@@ -1,0 +1,14 @@
+com\elcho\springboot\entity\User.class
+com\elcho\springboot\dao\ICustomerDao.class
+com\elcho\springboot\entity\Gender.class
+com\elcho\springboot\service\impl\UserServiceImpl.class
+com\elcho\springboot\config\WebMvcConfig.class
+com\elcho\springboot\UserLoginApplicationInitializer.class
+com\elcho\springboot\service\IUserService.class
+com\elcho\springboot\entity\Customer.class
+com\elcho\springboot\UserLoginSpringBootApplication.class
+com\elcho\springboot\config\DataSourceConfig.class
+com\elcho\springboot\entity\CustomerLevel.class
+com\elcho\springboot\controller\UserController.class
+com\elcho\springboot\controller\CustomerController.class
+com\elcho\springboot\dao\IUserDao.class

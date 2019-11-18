@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="user/common :: resources">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body class="text-center">
+<header th:replace="user/common :: header"></header>
+
+<div class="home">
+    <div th:if="${session.sessionUser}">
+        Login User: <span th:text="${session.sessionUser.userName}"></span>
+    </div>
+
+    <form th:if="${session.sessionUser == null}"  action="/user/login" name="userForm" method="post">
+        <h1 class="h3 mb-3 font-weight-normal">Please Login</h1>
+        <label for="inputName" class="sr-only">User name: </label>
+        <input type="text" id="inputName" name="userName" class="form-control" placeholder="User name" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+
+        <div th:text="${error}">error</div>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        <button class="btn btn-lg btn-danger btn-block" type="reset">Reset</button>
+
+        <footer th:replace="user/common :: footer"></footer>
+    </form>
+</div>
+
+</body>
+
+</html>
