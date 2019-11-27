@@ -18,12 +18,12 @@
 <!--Header Begin-->
 <header th:fragment="header" class="header header--invert headroom headroom--not-bottom headroom--pinned headroom--top">
     <div class="container">
-        <a href="/user/home" class="header__logo" id="header-logo-link">
+        <a href="/user" class="header__logo" id="header-logo-link">
             <img src="/static/img/logo.png" alt="Maven Logo">
         </a>
 
         <nav class="nav nav--invert" th:if="${session.sessionUser}">
-            <a class="nav__item" href="/user/home" data-href="Home" id="Home-link" ><span>Home</span></a>
+            <a class="nav__item" href="/user" data-href="Home" id="Home-link" ><span>Home</span></a>
             <a th:if="${session.sessionUser.role.equalsIgnoreCase('admin')}" class="nav__item" href="/user/admin" data-href="Admin" id="Admin-link"><span>Admin</span></a>
             <a th:if="${session.sessionUser.role.equalsIgnoreCase('admin')}" class="nav__item" href="/user/tutorials" data-href="Admin" id="Tutorials-link"><span>Tutorials</span></a>
             <a th:if="${!session.sessionUser.userName.isEmpty()}" class="nav__item" href="/user/update" data-href="Account Update" id="Account-Update-link"><span>Account Update</span></a>

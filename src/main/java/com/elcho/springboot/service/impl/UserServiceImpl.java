@@ -1,7 +1,7 @@
 package com.elcho.springboot.service.impl;
 
 import com.elcho.springboot.dao.IUserDao;
-import com.elcho.springboot.entity.User;
+import com.elcho.springboot.entity.CusUser;
 import com.elcho.springboot.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ public class UserServiceImpl  implements IUserService {
     private IUserDao userDao;
 
     @Override
-    public void save(User user) {
+    public void save(CusUser user) {
         userDao.save(user);
     }
 
     @Override
-    public void update(User user, Integer id) {
+    public void update(CusUser user, Integer id) {
         userDao.update(user, id);
     }
 
@@ -30,17 +30,17 @@ public class UserServiceImpl  implements IUserService {
     }
 
     @Override
-    public User findById(Integer id) {
+    public CusUser findById(Integer id) {
         return userDao.findById(id);
     }
 
     @Override
-    public List<User> findAll() {
+    public List<CusUser> findAll() {
         return userDao.findAll();
     }
 
     @Override
-    public User findByUserName(String userName) {
+    public CusUser findByUserName(String userName) {
         return userDao.queryByUserName(userName);
     }
 }

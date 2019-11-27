@@ -1,6 +1,6 @@
 package com.elcho.springboot.dao;
 
-import com.elcho.springboot.entity.User;
+import com.elcho.springboot.entity.CusUser;
 import org.apache.ibatis.annotations.*;
 
 import java.io.Serializable;
@@ -14,7 +14,7 @@ public interface IUserDao {
      */
     @Insert("insert into tbl_user(name,role,email,username,password) " +
             "values (#{name}, #{role} ,#{email} ,#{userName} ,#{password})")
-    void save(User user);
+    void save(CusUser user);
 
     /***************
      * 根据帐户ID来查询帐户信息
@@ -22,14 +22,14 @@ public interface IUserDao {
      * @return
      */
     @Select("select id,name,role,email,username,password from tbl_user where id = #{id}")
-    User findById(Serializable id);
+    CusUser findById(Serializable id);
 
     /****************
      * 查询所有帐户信息
      * @return
      */
     @Select("select * from tbl_user")
-    List<User> findAll();
+    List<CusUser> findAll();
 
     /*****************
      * 更新帐户
@@ -38,7 +38,7 @@ public interface IUserDao {
      *             "values (#{name},#{role} ,#{email} ,#{userName} ,#{password})
      */
     @Update("update tbl_user set name = #{user.name}, role = #{user.role}, email = #{user.email}, username = #{user.userName}, password=#{user.password} where id = #{id}")
-    void update(User user, Integer id);
+    void update(CusUser user, Integer id);
 
     /***************
      * 删除帐户
@@ -52,7 +52,7 @@ public interface IUserDao {
      * @param accountId
      * @return
      */
-    User queryByAccountId(Serializable accountId);
+    CusUser queryByAccountId(Serializable accountId);
 
     /***********
      * 根据用户名来查询用户信息
@@ -60,5 +60,5 @@ public interface IUserDao {
      * @return
      */
     @Select("select id,name,role,username,password from tbl_user where username = #{username}")
-    User queryByUserName(String userName);
+    CusUser queryByUserName(String userName);
 }
