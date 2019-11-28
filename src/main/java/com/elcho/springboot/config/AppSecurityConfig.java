@@ -1,6 +1,7 @@
 package com.elcho.springboot.config;
 
 import com.elcho.springboot.service.impl.UserDetailsServiceImpl;
+import com.elcho.springboot.verificationcode.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,13 +10,16 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
+@EnableWebSecurity
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -26,6 +30,10 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationSuccessHandler authenticationSuccessHandler;
     @Autowired
     private AuthenticationProvider authenticationProvider;
+    @Autowired
+    private AuthenticationFailureHandler myAuthenctiationFailureHandler;
+    @Autowired
+    private  ValidateCodeFilter validateCodeFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -62,24 +70,29 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         //super.configure(http);
         System.out.println("开始配置权限...............4");
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
         .sessionFixation().none();
         http.authorizeRequests()
-                .antMatchers("/user/login","/user/regist","/user").permitAll()
+                .antMatchers("/user/login","/user/regist","/user","/verifycode/image").permitAll()
                 .antMatchers("/","/home").hasAnyRole("USER","ADMIN","DBA")
                 .antMatchers("/admin/**").hasAnyRole("ADMIN","DBA")
                 .antMatchers("/dba/**").hasAnyRole("DBA")
                 .anyRequest().authenticated()
                 .and().csrf().disable()
+                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
                 .loginPage("/user/login")
                 .successHandler(authenticationSuccessHandler)
                 .failureForwardUrl("/myError")
+                .failureHandler(myAuthenctiationFailureHandler)
                 .usernameParameter("userName").passwordParameter("password")
                 .and()
-                .logout().permitAll()
+                .logout()
+                .logoutUrl("/user/logout")
+                .permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/accessDenied");
     }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:replace="user/common :: resources">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
@@ -12,12 +13,17 @@
         Login User: <span th:text="${session.sessionUser.userName}"></span>
     </div>
 
-    <form th:if="${session.sessionUser == null}"  action="/user/login" name="userForm" method="post">
+    <form th:if="${session.sessionUser == null}"  th:action="@{/user/login}" name="userForm" method="post">
         <h1 class="h3 mb-3 font-weight-normal">Please Login</h1>
         <label for="inputName" class="sr-only">User name: </label>
         <input type="text" id="inputName" name="userName" class="form-control" placeholder="User name" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+
+        <input type="text" value="" name="imageCode"  class="form-control" required>
+        <img id="identification" src="/verifycode/image" style="margin-left: 30px;">
+        <input type="button" value="看不清? 换一张." style="margin-left: 30px;" id="btn">
+
 
         <div th:text="${error}">error</div>
 
@@ -27,7 +33,16 @@
         <footer th:replace="user/common :: footer"></footer>
     </form>
 </div>
+<script type="text/javascript">
 
+    document.getElementById("btn").onclick = function () {
+        // 获取img元素
+        // 为了让浏览器发送请求到servlet, 所以一定要改变src
+        document.getElementsByTagName("img")[0].src =
+            "/verifycode/image?time=" + new Date().getTime();
+    };
+
+</script>
 </body>
 
 </html>

@@ -1,5 +1,12 @@
 package com.elcho.springboot.handler;
 
+import com.elcho.springboot.config.SecurityProperties;
+import com.elcho.springboot.entity.LoginType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -21,6 +28,14 @@ import java.util.List;
 @Component
 public class AppAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private SecurityProperties myProperties;
+
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException, IOException {
         System.out.println("开始根据权限判断将要跳转的页面................");
@@ -50,5 +65,23 @@ public class AppAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
         }else {
             return  "/accessDenied";
         }
+    }
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        //super.onAuthenticationSuccess(request, response, authentication);
+        logger.info("MyAuthenticationSuccessHandler login success!");
+        if (!LoginType.JSON.equals(myProperties.getLoginType())) {
+            logger.info("response.getWriter()");
+            response.setContentType("application/json;charset=UTF-8");
+            // 把authentication对象转成 json 格式 字符串 通过 response 以application/json;charset=UTF-8 格式写到响应里面去
+            response.getWriter().write(objectMapper.writeValueAsString(authentication));
+        } else {
+            // 父类的方法 就是 跳转
+            logger.info("go to super onAuthenticationSuccess");
+            //super.onAuthenticationSuccess(request, response, authentication);
+            this.handle(request, response, authentication);
+        }
+
     }
 }

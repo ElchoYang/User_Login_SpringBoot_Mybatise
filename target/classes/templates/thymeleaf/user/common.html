@@ -24,8 +24,8 @@
 
         <nav class="nav nav--invert" th:if="${session.sessionUser}">
             <a class="nav__item" href="/user" data-href="Home" id="Home-link" ><span>Home</span></a>
-            <a th:if="${session.sessionUser.role.equalsIgnoreCase('admin')}" class="nav__item" href="/user/admin" data-href="Admin" id="Admin-link"><span>Admin</span></a>
-            <a th:if="${session.sessionUser.role.equalsIgnoreCase('admin')}" class="nav__item" href="/user/tutorials" data-href="Admin" id="Tutorials-link"><span>Tutorials</span></a>
+            <a th:if="${session.sessionUser.role.equalsIgnoreCase('ROLE_ADMIN')}" class="nav__item" href="/user/admin" data-href="Admin" id="Admin-link"><span>Admin</span></a>
+            <a th:if="${session.sessionUser.role.equalsIgnoreCase('ROLE_ADMIN')}" class="nav__item" href="/user/tutorials" data-href="Admin" id="Tutorials-link"><span>Tutorials</span></a>
             <a th:if="${!session.sessionUser.userName.isEmpty()}" class="nav__item" href="/user/update" data-href="Account Update" id="Account-Update-link"><span>Account Update</span></a>
             <a th:if="${!session.sessionUser.userName.isEmpty()}" class="nav__item" href="/user/logout" data-href="Logout" id="Logout-link"><span>Logout</span></a>
             <a th:if="${session.sessionUser.userName.isEmpty()}" class="nav__item" href="/user/login" data-href="Login" id="Login-link"><span>Login</span></a>

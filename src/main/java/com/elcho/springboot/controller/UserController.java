@@ -90,15 +90,16 @@ public class UserController {
             log.info("--------  update password: " + u.getPassword());
             log.info("--------  update role: " + u.getRole());
             CusUser sessionUser = (CusUser) request.getSession().getAttribute(SESSION_USER);
-
+            u.setRole("ROLE_USER");
             userDao.update(u, sessionUser.getId());
             log.info("--------  update Done ");
             log.info("--------  Find user -------- ");
              sessionUser = userDao.findById(sessionUser.getId());
-             request.getSession().setAttribute("sessionUser",sessionUser);
+            log.info("--------  sessionUser role: " + sessionUser.getRole());
+             request.getSession().setAttribute("sessionUser",null);
 
              model.addAttribute("info", "Update successful");
-            /* return "forward:/user/logon";*/
+             return "forward:/user/logout";
         }
         return "user/update";
     }
